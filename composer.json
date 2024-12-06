@@ -53,6 +53,9 @@
         "test": "vendor/bin/pest",
         "types": "vendor/bin/pest --type-coverage --min=100"
     },
+    "bin": [
+        "bin/console"
+    ],
     "config": {
         "sort-packages": true,
         "allow-plugins": {
