@@ -1,48 +1,64 @@
 {
-    "name": ":vendor_slug/:package_slug",
-    "description": ":package_description",
+    "name": "rechtlogisch/tse-id-php",
+    "description": "Retrieves a list of TSE from BSI",
     "keywords": [
-        ":vendor_name",
-        ":package_slug"
+        "rechtlogisch",
+        "tse-id",
+        "technische sicherheitseinrichtungen",
+        "germany"
     ],
-    "homepage": "https://github.com/:vendor_slug/:package_slug",
+    "homepage": "https://github.com/rechtlogisch/tse-id-php",
     "license": "MIT",
     "authors": [
         {
-            "name": ":author_name",
-            "email": "author@domain.com",
+            "name": "Krzysztof Tomasz Zembrowski",
+            "email": "zembrowski@users.noreply.github.com",
             "role": "Developer"
         }
     ],
     "require": {
-        "php": "^8.4"
+        "php": "^8.1"
     },
     "require-dev": {
-        :require_dev_testing,
-        :require_dev_codestyle,
-        "spatie/ray": "^1.28"
+        "laravel/pint": "^1.18",
+        "pestphp/pest": "^3.0",
+        "pestphp/pest-plugin-type-coverage": "^3.0",
+        "phpstan/phpstan": "^1.12",
+        "symfony/browser-kit": "^7.1",
+        "symfony/css-selector": "^7.1",
+        "symfony/http-client": "^7.1"
     },
     "autoload": {
         "psr-4": {
-            "VendorName\\Skeleton\\": "src"
+            "Rechtlogisch\\TseId\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "VendorName\\Skeleton\\Tests\\": "tests"
+            "Tests\\": "tests"
         }
     },
     "scripts": {
-        :scripts_testing,
-        :scripts_codestyle
+        "analyse": "vendor/bin/phpstan analyse",
+        "coverage": "vendor/bin/pest --coverage --min=90",
+        "format": "vendor/bin/pint",
+        "quality": [
+            "@format",
+            "@test",
+            "@analyse",
+            "@types",
+            "@coverage"
+        ],
+        "test": "vendor/bin/pest",
+        "types": "vendor/bin/pest --type-coverage --min=100"
     },
     "config": {
         "sort-packages": true,
         "allow-plugins": {
-            :plugins_testing,
+            "pestphp/pest-plugin": true,
             "phpstan/extension-installer": true
         }
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "prefer-stable": true
 }

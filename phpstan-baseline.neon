@@ -1,0 +1,16 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Call to an undefined method Pest\\\\PendingCalls\\\\TestCall\\|Pest\\\\Support\\\\HigherOrderTapProxy\\:\\:expect\\(\\)\\.$#"
+			count: 1
+			path: tests/ArchTest.php
+
+		-
+			message: "#^Access to an undefined property Pest\\\\Mixins\\\\Expectation\\<array\\<string, array\\<string, string\\>\\>\\|null\\>\\:\\:\\$not\\.$#"
+			count: 1
+			path: tests/RetrieveTest.php
+
+		-
+			message: "#^Access to an undefined property Pest\\\\Mixins\\\\Expectation\\<bool\\|string\\|null\\>\\:\\:\\$not\\.$#"
+			count: 1
+			path: tests/RetrieveTest.php
