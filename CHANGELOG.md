@@ -2,6 +2,12 @@
 
 All notable changes to `tse-id-php` will be documented in this file.
 
+## v0.1.1 - 2024-12-06
+
+- Add `tse-id:retrieve` console command
+
+**Full Changelog**: https://github.com/rechtlogisch/tse-id-php/compare/v0.1.0...v0.1.1
+
 ## v0.1.0 - 2024-12-06
 
 - Retrieve the list of TSE from BSI
