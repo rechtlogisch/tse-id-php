@@ -26,18 +26,10 @@ it('retrieve and returns json', function () use (&$retrieve) {
 
 it('retrieve in desired format', function () use (&$retrieve) {
     $desiredOutput = <<<'JSON'
-{
-    "0362-2019": {
-        "id": "0362",
-        "year": "2019",
-        "content": "Swissbit TSE, Version 1.0 Swissbit USB TSE Swissbit SD TSE Swissbit microSD TSE",
-        "manufacturer": "Swissbit AG",
-        "date_issuance": "20.12.2019"
-    }
-}
+{"0362-2019":{"id":"0362","year":"2019","content":"Swissbit TSE, Version 1.0 Swissbit USB TSE Swissbit SD TSE Swissbit microSD TSE","manufacturer":"Swissbit AG","date_issuance":"20.12.2019"}}
 JSON;
 
-    $list = $retrieve->json('0362-2019');
+    $list = $retrieve->json('0362-2019', false);
     expect($list)
         ->toBeJson()
         ->toBe($desiredOutput);

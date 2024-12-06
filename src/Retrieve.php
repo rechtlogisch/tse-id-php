@@ -86,12 +86,17 @@ class Retrieve
         return $this->retrieved;
     }
 
-    public function json(?string $tseId = null): string
+    public function json(?string $tseId = null, bool $pretty = true): string
     {
         try {
             $retrieved = ($tseId) ? [$tseId => $this->retrieved[$tseId]] : $this->retrieved;
 
-            return json_encode($retrieved, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT);
+            $flags = JSON_THROW_ON_ERROR;
+            if ($pretty) {
+                $flags |= JSON_PRETTY_PRINT;
+            }
+
+            return json_encode($retrieved, $flags);
         } catch (JsonException) {
             return '';
         }
