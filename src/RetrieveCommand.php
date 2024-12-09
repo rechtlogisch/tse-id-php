@@ -15,7 +15,6 @@ class RetrieveCommand extends Command
         $output->writeln('Retrieving TSE list from BSI...');
 
         $retrieve = new Retrieve;
-        $retrieve->run();
         $result = $retrieve->save('list');
 
         if (empty($result) || empty($result[array_key_first($result)])) {

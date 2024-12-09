@@ -4,10 +4,7 @@ use Rechtlogisch\TseId\Retrieve;
 
 // Retrieve data from BSI only once
 $retrieve = (function () {
-    $retrieve = new Retrieve;
-    $retrieve->run();
-
-    return $retrieve;
+    return new Retrieve;
 })();
 
 it('retrieve data from BSI website', function () use (&$retrieve) {
@@ -52,10 +49,4 @@ it('retrieve and save data to file', function () use (&$retrieve) {
 
         unlink($path);
     }
-});
-
-// for code coverage
-it('runs', function () use ($retrieve) {
-    $retrieve->run();
-    expect($retrieve)->toBeInstanceOf(Retrieve::class);
 });

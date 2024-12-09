@@ -20,7 +20,6 @@ composer require rechtlogisch/tse-id-php
 
 ```php
 $retrieve = new Rechtlogisch\TseId\Retrieve;
-$retrieve->run();
 echo $retrieve->json();
 ```
 

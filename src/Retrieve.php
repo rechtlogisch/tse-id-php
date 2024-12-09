@@ -4,21 +4,26 @@ declare(strict_types=1);
 
 namespace Rechtlogisch\TseId;
 
-use JsonException;
 use Symfony\Component\BrowserKit\HttpBrowser;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpClient\HttpClient;
+use Throwable;
 
 class Retrieve
 {
     private int $countPages = 1;
 
-    private string $url = 'https://www.bsi.bund.de/EN/Themen/Unternehmen-und-Organisationen/Standards-und-Zertifizierung/Zertifizierung-und-Anerkennung/Listen/Zertifizierte-Produkte-nach-TR/Technische_Sicherheitseinrichtungen/TSE_node.html?gts=913608_list%253DdateOfRevision_dt%252Bdesc&gtp=913608_list%253D';
+    private const URL = 'https://www.bsi.bund.de/EN/Themen/Unternehmen-und-Organisationen/Standards-und-Zertifizierung/Zertifizierung-und-Anerkennung/Listen/Zertifizierte-Produkte-nach-TR/Technische_Sicherheitseinrichtungen/TSE_node.html?gts=913608_list%253DdateOfRevision_dt%252Bdesc&gtp=913608_list%253D';
 
     /**
      * @var array<string, array<string, string>>
      */
     private array $retrieved = [];
+
+    public function __construct()
+    {
+        $this->run();
+    }
 
     public function run(): void
     {
@@ -32,7 +37,7 @@ class Retrieve
 
     public function page(int $no = 1): void
     {
-        $url = $this->url.$no;
+        $url = self::URL.$no;
 
         $browser = new HttpBrowser(HttpClient::create());
         $crawler = $browser->request('GET', $url);
@@ -97,8 +102,8 @@ class Retrieve
             }
 
             return json_encode($retrieved, $flags);
-        } catch (JsonException) {
-            return '';
+        } catch (Throwable $e) {
+            return $e->getMessage();
         }
     }
 
