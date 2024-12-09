@@ -105,30 +105,28 @@ class Retrieve
     /**
      * @return array<string, string>
      */
-    public function save(): array
+    public function save(string $path = '.'): array
     {
         $files = [];
 
-        $filename = date('Y-m-d');
+        $prefix = date('Y-m-d');
 
-        $files['json'] = $this->saveJson($filename);
-        //        $files['xml'] = $this->saveXml($filename);
-        //        $files['csv'] = $this->saveCsv($filename);
+        $files['json'] = $this->saveJson($path.DIRECTORY_SEPARATOR.$prefix);
 
         return $files;
     }
 
-    private function saveJson(string $filename): string
+    private function saveJson(string $path): string
     {
         $content = $this->json();
-        $filenameWithExtension = $filename.'.json';
-        $result = file_put_contents($filenameWithExtension, $content);
+        $pathWithExtension = $path.'.json';
+        $result = file_put_contents($pathWithExtension, $content);
 
         if ($result === false) {
             return '';
         }
 
-        $path = realpath($filenameWithExtension);
+        $path = realpath($pathWithExtension);
 
         if ($path === false) {
             return '';

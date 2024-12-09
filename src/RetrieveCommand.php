@@ -16,7 +16,7 @@ class RetrieveCommand extends Command
 
         $retrieve = new Retrieve;
         $retrieve->run();
-        $result = $retrieve->save();
+        $result = $retrieve->save('list');
 
         if (empty($result) || empty($result[array_key_first($result)])) {
             $output->writeln('Failed to retrieve TSE list from BSI');
@@ -24,7 +24,11 @@ class RetrieveCommand extends Command
             return Command::FAILURE;
         }
 
-        $output->writeln('Retrieved listed saved to: '.$result[array_key_first($result)]);
+        $path = $result[array_key_first($result)];
+
+        $output->writeln('Retrieved listed saved to: '.$path);
+
+        unlink($path);
 
         return Command::SUCCESS;
     }

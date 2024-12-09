@@ -49,6 +49,8 @@ it('retrieve and save data to file', function () use (&$retrieve) {
         expect($content)
             ->toBeJson()
             ->not->toBeEmpty();
+
+        unlink($path);
     }
 });
 
