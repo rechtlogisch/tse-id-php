@@ -2,6 +2,13 @@
 
 All notable changes to `tse-id-php` will be documented in this file.
 
+## v0.1.2 - 2024-12-09
+
+- Add `targetPath` to `tse-id:retrieve` command
+- Refactor code
+
+**Full Changelog**: https://github.com/rechtlogisch/tse-id-php/compare/v0.1.1...v0.1.2
+
 ## v0.1.1 - 2024-12-06
 
 - Add `tse-id:retrieve` console command
