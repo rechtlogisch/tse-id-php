@@ -110,7 +110,7 @@ class Retrieve
     /**
      * @return array<string, string>
      */
-    public function save(string $path = '.'): array
+    public function save(mixed $path = '.'): array
     {
         $files = [];
 

@@ -20,4 +20,6 @@ it('executes the command successfully', function () {
         ->toContain('Retrieving TSE list from BSI...')
         ->toContain('Retrieved listed saved to: ')
         ->toContain('.json');
+
+    unlink(date('Y-m-d').'.json');
 });
