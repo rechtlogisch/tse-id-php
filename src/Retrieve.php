@@ -116,7 +116,7 @@ class Retrieve
 
         $prefix = date('Y-m-d');
 
-        $files['json'] = $this->saveJson($path.DIRECTORY_SEPARATOR.$prefix);
+        $files['json'] = $this->saveJson($path.DIRECTORY_SEPARATOR.$prefix); // @phpstan-ignore-line
 
         return $files;
     }
