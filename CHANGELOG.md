@@ -2,6 +2,12 @@
 
 All notable changes to `tse-id-php` will be documented in this file.
 
+## v0.2.0 - 2025-06-16
+
+- End support PHP 8.1
+
+**Full Changelog**: https://github.com/rechtlogisch/tse-id-php/compare/v0.1.2...v0.2.0
+
 ## v0.1.2 - 2024-12-09
 
 - Add `targetPath` to `tse-id:retrieve` command
