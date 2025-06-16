@@ -4,5 +4,6 @@
 /list
 /vendor
 .DS_Store
+.env
 composer.lock
 phpunit.xml
