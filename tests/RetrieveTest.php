@@ -50,3 +50,17 @@ it('retrieve and save data to file', function () use (&$retrieve) {
         unlink($path);
     }
 });
+
+it('retrieve and check the retrieved keys are in descending order', function () use (&$retrieve) {
+    $list = $retrieve->list();
+    $keys = array_keys($list);
+
+    $sorted = $keys;
+    arsort($sorted, SORT_NATURAL);
+
+    /** @noinspection JsonEncodingApiUsageInspection */
+    expect($keys)->toBe($sorted)
+        ->and(count($keys))->toBe(count($sorted))
+        ->and(array_values($keys))->toBe(array_values($sorted))
+        ->and(json_encode($keys))->toBe(json_encode($sorted));
+});
