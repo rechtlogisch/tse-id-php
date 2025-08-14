@@ -13,7 +13,7 @@ class Retrieve
 {
     private int $countPages = 1;
 
-    private const URL = 'https://www.bsi.bund.de/EN/Themen/Unternehmen-und-Organisationen/Standards-und-Zertifizierung/Zertifizierung-und-Anerkennung/Listen/Zertifizierte-Produkte-nach-TR/Technische_Sicherheitseinrichtungen/TSE_node.html?gts=913608_list%253DdateOfRevision_dt%252Bdesc&gtp=913608_list%253D';
+    private const URL = 'https://www.bsi.bund.de/EN/Themen/Unternehmen-und-Organisationen/Standards-und-Zertifizierung/Zertifizierung-und-Anerkennung/Listen/Zertifizierte-Produkte-nach-TR/Technische_Sicherheitseinrichtungen/TSE_node.html?gts=913608_list%253Dtitle_text_sort%252Bdesc&gtp=913608_list%253D';
 
     /**
      * @var array<string, array<string, string>>
@@ -33,6 +33,8 @@ class Retrieve
             $this->page($page);
             $page++;
         }
+
+        krsort($this->retrieved, SORT_NATURAL);
     }
 
     public function page(int $no = 1): void
