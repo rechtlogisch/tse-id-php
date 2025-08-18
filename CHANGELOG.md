@@ -2,6 +2,18 @@
 
 All notable changes to `tse-id-php` will be documented in this file.
 
+## v0.2.1 - 2025-08-14
+
+🚀 What’s in this Release:
+
+- 🆔 Sort by BSI-ID instead of date, to keep the list sorting consistent.
+
+### PRs
+
+* feat: sort by id desc by @zembrowski in https://github.com/rechtlogisch/tse-id-php/pull/8
+
+**Full Changelog**: https://github.com/rechtlogisch/tse-id-php/compare/v0.2.0...v0.2.1
+
 ## v0.2.0 - 2025-06-16
 
 - End support PHP 8.1
