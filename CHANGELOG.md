@@ -2,6 +2,16 @@
 
 All notable changes to `tse-id-php` will be documented in this file.
 
+## v0.2.2 - 2025-08-18
+
+- 🔧 extends output in case of errors and extends tests to reach high code coverage
+
+### PRs
+
+* feat: extend output and tests by @zembrowski in https://github.com/rechtlogisch/tse-id-php/pull/9
+
+**Full Changelog**: https://github.com/rechtlogisch/tse-id-php/compare/v0.2.1...v0.2.2
+
 ## v0.2.1 - 2025-08-14
 
 🚀 What’s in this Release:
