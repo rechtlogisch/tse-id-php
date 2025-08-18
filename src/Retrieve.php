@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Rechtlogisch\TseId;
 
+use RuntimeException;
 use Symfony\Component\BrowserKit\HttpBrowser;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpClient\HttpClient;
@@ -13,15 +14,18 @@ class Retrieve
 {
     private int $countPages = 1;
 
-    private const URL = 'https://www.bsi.bund.de/EN/Themen/Unternehmen-und-Organisationen/Standards-und-Zertifizierung/Zertifizierung-und-Anerkennung/Listen/Zertifizierte-Produkte-nach-TR/Technische_Sicherheitseinrichtungen/TSE_node.html?gts=913608_list%253Dtitle_text_sort%252Bdesc&gtp=913608_list%253D';
+    public const URL = 'https://www.bsi.bund.de/EN/Themen/Unternehmen-und-Organisationen/Standards-und-Zertifizierung/Zertifizierung-und-Anerkennung/Listen/Zertifizierte-Produkte-nach-TR/Technische_Sicherheitseinrichtungen/TSE_node.html?gts=913608_list%253Dtitle_text_sort%252Bdesc&gtp=913608_list%253D';
 
     /**
      * @var array<string, array<string, string>>
      */
     private array $retrieved = [];
 
-    public function __construct()
+    private HttpBrowser $browser;
+
+    public function __construct(?HttpBrowser $browser = null)
     {
+        $this->browser = $browser ?? new HttpBrowser(HttpClient::create());
         $this->run();
     }
 
@@ -41,48 +45,53 @@ class Retrieve
     {
         $url = self::URL.$no;
 
-        $browser = new HttpBrowser(HttpClient::create());
-        $crawler = $browser->request('GET', $url);
+        try {
+            $crawler = $this->browser->request('GET', $url);
 
-        if ($no === 1) {
-            $paginationText = $crawler->filter('#content nav.c-pagination p')->text();
-            preg_match('/Search results (\d+) to (\d+) from a total of (\d+)/', $paginationText, $matches);
-            $max = $matches[3] ?? '0';
+            if ($no === 1) {
+                $paginationText = $crawler->filter('#content nav.c-pagination p')->text();
+                preg_match('/Search results (\d+) to (\d+) from a total of (\d+)/', $paginationText, $matches);
+                $max = $matches[3] ?? '0';
 
-            $this->countPages = (int) ceil((int) $max / 10);
-        }
+                $this->countPages = (int) ceil((int) $max / 10);
+            }
 
-        $crawler->filter('#content div.wrapperTable table.textualData tbody tr')->each(function (Crawler $row) {
-            $rowData = [];
-            $tseId = null;
+            $crawler->filter('#content div.wrapperTable table.textualData tbody tr')->each(function (Crawler $row) {
+                $rowData = [];
+                $tseId = null;
 
-            $row->filter('td')->each(function (Crawler $cell, int $index) use (&$rowData, &$tseId) {
-                $header = '';
+                $row->filter('td')->each(function (Crawler $cell, int $index) use (&$rowData, &$tseId) {
+                    $header = '';
 
-                switch ($index) {
-                    case 0: $header = 'tse_id';
-                        break;
-                    case 1: $header = 'content';
-                        break;
-                    case 2: $header = 'manufacturer';
-                        break;
-                    case 3: $header = 'date_issuance';
-                        break;
-                }
+                    switch ($index) {
+                        case 0: $header = 'tse_id';
+                            break;
+                        case 1: $header = 'content';
+                            break;
+                        case 2: $header = 'manufacturer';
+                            break;
+                        case 3: $header = 'date_issuance';
+                            break;
+                    }
 
-                if ($header === 'tse_id') {
-                    $fullIdText = $cell->text();
-                    $tseId = str_replace('BSI-K-TR-', '', $fullIdText);
-                    [$id, $year] = explode('-', $tseId);
-                    $rowData['id'] = $id;
-                    $rowData['year'] = $year;
-                } else {
-                    $rowData[$header] = trim($cell->text());
-                }
+                    if ($header === 'tse_id') {
+                        $fullIdText = $cell->text();
+                        $tseId = str_replace('BSI-K-TR-', '', $fullIdText);
+                        [$id, $year] = explode('-', $tseId);
+                        $rowData['id'] = $id;
+                        $rowData['year'] = $year;
+                    } else {
+                        $rowData[$header] = trim($cell->text());
+                    }
+                });
+
+                $this->retrieved[$tseId] = $rowData;
             });
-
-            $this->retrieved[$tseId] = $rowData;
-        });
+        } catch (Throwable $e) {
+            $html = $this->browser->getResponse()->getContent();
+            throw (new RetrieveException($e->getMessage(), $e->getCode(), $e->getPrevious()))
+                ->addContext($url, $html);
+        }
     }
 
     /**
@@ -112,13 +121,13 @@ class Retrieve
     /**
      * @return array<string, string>
      */
-    public function save(mixed $path = '.'): array
+    public function save(string $path = '.'): array
     {
         $files = [];
 
         $prefix = date('Y-m-d');
 
-        $files['json'] = $this->saveJson($path.DIRECTORY_SEPARATOR.$prefix); // @phpstan-ignore-line
+        $files['json'] = $this->saveJson($path.DIRECTORY_SEPARATOR.$prefix);
 
         return $files;
     }
@@ -127,16 +136,21 @@ class Retrieve
     {
         $content = $this->json();
         $pathWithExtension = $path.'.json';
+        $dir = dirname($pathWithExtension);
+        if (! is_dir($dir) || ! is_writable($dir)) {
+            return '';
+        }
+
         $result = file_put_contents($pathWithExtension, $content);
 
         if ($result === false) {
-            return '';
+            throw new RuntimeException('Could not write file: '.$pathWithExtension);
         }
 
         $path = realpath($pathWithExtension);
 
         if ($path === false) {
-            return '';
+            throw new RuntimeException('Could not determine real path: '.$pathWithExtension);
         }
 
         return $path;
