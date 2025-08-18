@@ -1,18 +1,53 @@
 <?php
 
 use Rechtlogisch\TseId\Retrieve;
+use Symfony\Component\BrowserKit\HttpBrowser;
+use Symfony\Component\HttpClient\MockHttpClient;
+use Symfony\Component\HttpClient\Response\MockResponse;
 
-// Retrieve data from BSI only once
+// Mock page only once
 $retrieve = (function () {
-    return new Retrieve;
+    $html = <<<'HTML'
+<!DOCTYPE html>
+<html lang="en">
+  <body>
+    <div id="content">
+      <nav class="c-pagination"><p>Search results 1 to 10 from a total of 1</p></nav>
+      <div class="wrapperTable">
+        <table class="textualData">
+          <tbody>
+            <tr>
+              <td>BSI-K-TR-0362-2019</td>
+              <td>Swissbit TSE, Version 1.0 Swissbit USB TSE Swissbit SD TSE Swissbit microSD TSE</td>
+              <td>Swissbit AG</td>
+              <td>20.12.2019</td>
+            </tr>
+            <tr>
+              <td>BSI-K-TR-9999-2099</td>
+              <td>Another Content</td>
+              <td>ACME</td>
+              <td>01.01.2099</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+</html>
+HTML;
+
+    $client = new MockHttpClient([new MockResponse($html)]);
+    $browser = new HttpBrowser($client);
+
+    return new Retrieve($browser);
 })();
 
-it('retrieve data from BSI website', function () use (&$retrieve) {
+it('retrieve data from website (mocked)', function () use (&$retrieve) {
     $list = $retrieve->list();
     expect($list)
         ->toBeArray()
         ->not->toBeEmpty()
-        ->and(count($list))->toBeGreaterThanOrEqual(19);
+        ->and(count($list))->toBeGreaterThanOrEqual(1);
 });
 
 it('retrieve and returns json', function () use (&$retrieve) {

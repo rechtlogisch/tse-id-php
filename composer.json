@@ -44,7 +44,8 @@
     "scripts": {
         "analyse": "vendor/bin/phpstan analyse",
         "arch": "vendor/bin/pest --group=arch",
-        "coverage": "vendor/bin/pest --coverage --min=90",
+        "coverage": "vendor/bin/pest --coverage --min=99",
+        "external": "vendor/bin/pest --group=external",
         "format": "vendor/bin/pint",
         "quality": [
             "@arch",
@@ -52,9 +53,10 @@
             "@test",
             "@analyse",
             "@types",
-            "@coverage"
+            "@coverage",
+            "@external"
         ],
-        "test": "vendor/bin/pest --exclude-group=arch",
+        "test": "vendor/bin/pest --exclude-group=arch --exclude-group=external",
         "types": "vendor/bin/pest --type-coverage --min=100"
     },
     "bin": [
