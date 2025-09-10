@@ -2,12 +2,12 @@
 
 use Rechtlogisch\TseId\Retrieve;
 
-$retrieve = (function () {
+$retrieve = function () {
     return new Retrieve;
-})();
+};
 
 it('retrieve data from BSI website', function () use (&$retrieve) {
-    $list = $retrieve->list();
+    $list = $retrieve()->list();
     expect($list)
         ->toBeArray()
         ->not->toBeEmpty()

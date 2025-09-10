@@ -88,7 +88,13 @@ class Retrieve
                 $this->retrieved[$tseId] = $rowData;
             });
         } catch (Throwable $e) {
-            $html = $this->browser->getResponse()->getContent();
+            $html = null;
+            try {
+                $html = $this->browser->getResponse()->getContent();
+            } catch (Throwable) {
+                // No response available (request failed before completion)
+                // This is expected when the initial request() call fails
+            }
             throw (new RetrieveException($e->getMessage(), $e->getCode(), $e->getPrevious()))
                 ->addContext($url, $html);
         }
