@@ -56,7 +56,7 @@
             "@coverage",
             "@external"
         ],
-        "test": "vendor/bin/pest --exclude-group=arch --exclude-group=external",
+        "test": "vendor/bin/pest --no-coverage --exclude-group=arch --exclude-group=external",
         "types": "vendor/bin/pest --type-coverage --min=100"
     },
     "bin": [
