@@ -1,0 +1,9 @@
+{
+    "9999-2099": {
+        "id": "9999",
+        "year": "2099",
+        "content": "Test Content",
+        "manufacturer": "ACME",
+        "date_issuance": "01.01.2099"
+    }
+}
