@@ -36,7 +36,7 @@ HTML;
     $browser = new HttpBrowser($client);
 
     $application = new Application;
-    $application->add(new RetrieveCommand($browser));
+    $application->addCommand(new RetrieveCommand($browser));
 
     $command = $application->find('tse-id:retrieve');
 
@@ -62,7 +62,7 @@ it('fails and prints details when retrieval throws RetrieveException', function 
     $browser = new HttpBrowser($client);
 
     $application = new Application;
-    $application->add(new RetrieveCommand($browser));
+    $application->addCommand(new RetrieveCommand($browser));
 
     $command = $application->find('tse-id:retrieve');
     $tester = new CommandTester($command);
@@ -108,7 +108,7 @@ HTML;
     $browser = new HttpBrowser($client);
 
     $app = new Application;
-    $app->add(new RetrieveCommand($browser));
+    $app->addCommand(new RetrieveCommand($browser));
 
     $command = $app->find('tse-id:retrieve');
     $tester = new CommandTester($command);
