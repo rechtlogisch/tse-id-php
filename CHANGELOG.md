@@ -2,6 +2,11 @@
 
 All notable changes to `tse-id-php` will be documented in this file.
 
+## v0.3.0 - 2026-01-22
+
+- 🔄 update Symfony dependencies to 7.4
+- ✨ improve workflows
+
 ## v0.2.2 - 2025-08-18
 
 - 🔧 extends output in case of errors and extends tests to reach high code coverage
