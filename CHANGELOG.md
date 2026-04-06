@@ -2,6 +2,10 @@
 
 All notable changes to `tse-id-php` will be documented in this file.
 
+## v0.3.1 - 2026-04-06
+
+- 🔄 allow Symfony 8.0 dependencies
+
 ## v0.3.0 - 2026-01-22
 
 - 🔄 update Symfony dependencies to 7.4
